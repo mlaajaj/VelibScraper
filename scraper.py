@@ -70,11 +70,12 @@ data = get_data(data_url)
 stations = get_stations(stations_url)
 final_df = get_final_df(data, stations)
 final_df.to_csv('data.csv')
-histo_df = pd.read_csv('histo.csv') 
 
 #------------------------------ HISTORISATION ----------------------------------------------
-# Historisation 
-historisation = (pd.concat([final_df, histo_df], ignore_index=True, sort =False)
-        .drop_duplicates(['Identifiant station','Actualisation de la donnée'], keep='last'))
-
-historisation.to_csv('histo.csv', index=False)
+try:
+    histo_df = pd.read_csv('histo.csv') 
+    historisation = (pd.concat([final_df, histo_df], ignore_index=True, sort =False)
+            .drop_duplicates(['Identifiant station','Actualisation de la donnée'], keep='last'))
+    historisation.to_csv('histo.csv', index=False)
+except:
+    final_df.to_csv('histo.csv')
