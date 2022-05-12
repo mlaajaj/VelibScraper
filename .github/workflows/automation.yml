@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Script 
         run: |
-          python scraper.ipynb
+          python scraper.py
       
       - name: Commit and Push Changes
         run: |
