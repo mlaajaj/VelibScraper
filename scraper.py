@@ -55,8 +55,8 @@ def get_final_df(data,stations):
     for element in results:
         villes.append(element['name'])
         region.append(element['admin1'])
-    final_df['Lattitude'] = villes
-    final_df['Longitude'] = region
+    final_df['Ville'] = villes
+    final_df['Region'] = region
     
     final_df['Tx_Disp_Velos'] = round(100*final_df['Nombre total vélos disponibles']/final_df['Capacité de la station'],2)
     final_df['Tx_Disp_Bornette'] = 100-final_df['Tx_Disp_Velos']
