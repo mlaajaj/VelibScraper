@@ -2,6 +2,7 @@ import pandas as pd
 import json
 from flatten_json import flatten
 import requests
+import reverse_geocoder as rg
 
 
 data_url = "https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metropole/station_status.json"
