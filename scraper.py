@@ -20,16 +20,7 @@ def get_data(url):
     df['last_reported'] = df['last_reported'].dt.tz_localize(None)
     max_date = df['last_reported'].dt.date.max()
     df = df[df['last_reported'].dt.date==max_date].sort_values('last_reported',ascending=False)
-    
-    villes = []
-    region = []
-    results = rg.search(list(zip(df['Lattitude'], df['Longitude'])))
-    for element in results:
-        villes.append(element['name'])
-        region.append(element['admin1'])
-    df['Ville'] = villes
-    df['Region'] = region
-    
+      
     return df
 
 def get_stations(url):
@@ -37,7 +28,7 @@ def get_stations(url):
     d = r.json()
     data = d['data']['stations']
     df = pd.DataFrame([flatten(d) for d in data])    
-
+    
     return df
 
 def get_final_df(data,stations):
@@ -47,7 +38,7 @@ def get_final_df(data,stations):
     # Selecting & Renaming columns 
     cols = ['station_id','name','is_installed','capacity','numDocksAvailable','numBikesAvailable',
     'num_bikes_available_types_0_mechanical','num_bikes_available_types_1_ebike',
-    'is_renting','is_returning','last_reported','lat','lon','Ville','Region']
+    'is_renting','is_returning','last_reported','lat','lon']
 
     final_df = final_df[cols]
     final_df.columns =  ['Identifiant station', 'Nom station', 'Station en fonctionnement',
@@ -55,8 +46,17 @@ def get_final_df(data,stations):
        'Nombre total vélos disponibles', 'Vélos mécaniques disponibles',
        'Vélos électriques disponibles', 'Borne de paiement disponible',
        'Retour vélib possible', 'Actualisation de la donnée',
-       'Lattitude', 'Longitude','Ville','Region']
+       'Lattitude', 'Longitude']
 
+    villes = []
+    region = []
+    results = rg.search(list(zip(final_df['Lattitude'], final_df['Longitude'])))
+    for element in results:
+        villes.append(element['name'])
+        region.append(element['admin1'])
+    final_df['Lattitude'] = villes
+    final_df['Longitude'] = region
+    
     final_df['Tx_Disp_Velos'] = round(100*final_df['Nombre total vélos disponibles']/final_df['Capacité de la station'],2)
     final_df['Tx_Disp_Bornette'] = 100-final_df['Tx_Disp_Velos']
 
