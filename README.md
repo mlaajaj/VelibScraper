@@ -16,10 +16,10 @@ Voulant travailler sur une application permettant de fournir un historique de l'
 Cependant, les données fournies sont en flux continu et ne permettent pas d'obtenir un historique des stations et des flux.   
 J'ai décidé, par le biais de Python et de Github Workflow, de récupérer les données et de les répartir en deux fichiers:
 
-| Elements | Data.csv | Histo.csv |
+| Elements | MàJ | Contenu |
 | :---:         |     :---:      |          :---: |
-| MàJ   | 30 min     | 30 min    |
-| Contenu     | Flux continu       | Flux continu + historique      |
+| data.csv   | 30 min     | Flux continu    |
+| histo.csv     | 30 min       | Flux continu + historique      |
 
 ## TO-DO
 
