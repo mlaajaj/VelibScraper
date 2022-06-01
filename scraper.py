@@ -71,7 +71,7 @@ def get_final_df(data,stations):
 def get_proxies():
     proxies = []
     response = requests.get('https://vpnhack.com/premium-proxy-list')
-    soup = BeautifulSoup(response.text, 'lxml')
+    soup = BeautifulSoup(response.text, 'html.parser')
     for element in soup.find('tbody').find_all('tr'):
         ip = element.find('td').text
         port = element.findAll('td')[1].text
