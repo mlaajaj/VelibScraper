@@ -113,7 +113,7 @@ meteo_df = pd.DataFrame(meteo_data, columns=cols)
 
 final_meteo_df = pd.merge(left=final_df, right=meteo_df, how='inner', left_on='Ville', right_on='ville')
 
-final_meteo_df.to_csv('data.csv', index=False, compression="zip")
+final_meteo_df.to_csv('data.csv', index=False)
 
 #------------------------------ HISTORISATION ----------------------------------------------
 try:
@@ -122,4 +122,4 @@ try:
             .drop_duplicates(['Identifiant station','Actualisation de la donnée'], keep='last'))
     historisation.to_csv('histo.csv', index=False, compression="zip")
 except:
-    final_meteo_df.to_csv('histo.csv',index=False, compression="zip")
+    final_meteo_df.to_csv('histo.csv',index=False)
