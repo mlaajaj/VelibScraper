@@ -15,7 +15,7 @@ Velib Scraper est comme son nom l'indique un scraper de données de l'API "Velib
 Voulant travailler sur une application permettant de fournir un historique de l'utilisation des vélib par emplacement, j'ai décidé d'utiliser l'API officielle afin d'obtenir ces données. 
 Cependant, les données fournies sont en flux continu et ne permettent pas d'obtenir un historique des stations et des flux.   
 
-```1/06/22 : les données sont maintenant également **enrichies avec des informations sur la météo**.     
+```1/06/22``` : les données sont maintenant également **enrichies avec des informations sur la météo**.     
 
 ## Informations sur les données 
 
