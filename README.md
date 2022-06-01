@@ -14,8 +14,9 @@ Velib Scraper est comme son nom l'indique un scraper de données de l'API "Velib
 
 Voulant travailler sur une application permettant de fournir un historique de l'utilisation des vélib par emplacement, j'ai décidé d'utiliser l'API officielle afin d'obtenir ces données. 
 Cependant, les données fournies sont en flux continu et ne permettent pas d'obtenir un historique des stations et des flux. 
-Depuis peu, les données ont été également été **enrichies avec des informations sur la météo**. 
-J'ai décidé, par le biais de Python et de Github Workflow, de récupérer les données et de les répartir en deux fichiers:
+Depuis peu, les données ont été également été **enrichies avec des informations sur la météo**.   
+
+## Informations sur les données 
 
 | Elements | MàJ | Contenu |
 | :---:         |     :---:      |          :---: |
