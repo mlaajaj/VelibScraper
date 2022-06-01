@@ -117,9 +117,9 @@ final_meteo_df.to_csv('data.csv', index=False)
 
 #------------------------------ HISTORISATION ----------------------------------------------
 try:
-    histo_df = pd.read_csv('histo.csv', compression="zip") 
+    histo_df = pd.read_csv('histo.csv') 
     historisation = (pd.concat([final_meteo_df, histo_df], ignore_index=True, sort =False)
             .drop_duplicates(['Identifiant station','Actualisation de la donnée'], keep='last'))
-    historisation.to_csv('histo.csv', index=False, compression="zip")
+    historisation.to_csv('histo.csv', index=False)
 except:
     final_meteo_df.to_csv('histo.csv',index=False)
