@@ -3,6 +3,11 @@ import json
 from flatten_json import flatten
 import requests
 import reverse_geocoder as rg
+import requests 
+from bs4 import BeautifulSoup 
+from fake_useragent import FakeUserAgent
+import random
+
 
 
 data_url = "https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metropole/station_status.json"
@@ -63,19 +68,55 @@ def get_final_df(data,stations):
 
     return final_df
 
+def get_proxies():
+    proxies = []
+    response = requests.get('https://vpnhack.com/premium-proxy-list')
+    soup = BeautifulSoup(response.text, 'lxml')
+    for element in soup.find('tbody').find_all('tr'):
+        ip = element.find('td').text
+        port = element.findAll('td')[1].text
+        port = port.replace(', 3128','')
+        proxies.append(ip+':'+port)
+
+    return random.choice(proxies)
 
 #------------------------------ PROCESS ----------------------------------------------
 # Process
 data = get_data(data_url)
 stations = get_stations(stations_url)
 final_df = get_final_df(data, stations)
-final_df.to_csv('data.csv')
+
+#-------------------------------- METEO ----------------------------------------------
+
+ua = FakeUserAgent().random
+prox = get_proxies()
+villes = list(final_df['Ville'].unique())
+meteo_data = []
+
+for ville in villes:
+    url = f'https://www.lameteoagricole.net/index_meteo-heure-par-heure.php?communehome={ville}'
+    response = requests.get(url, headers = {'headers':ua}, proxies = {'http':prox}, timeout =5)
+    soup = BeautifulSoup(response.text, 'lxml')
+    text = soup.findAll('div', {'class':'fond2'})[1]
+    d = text.getText(strip=True,separator='\n').splitlines()
+    d = d[1:]
+    ville_data = [n.strip() for n in d[1::2]]
+    ville_data.append(ville)
+    meteo_data.append(ville_data)
+
+cols = [n.strip() for n in d[0::2]]
+cols.append('ville')
+meteo_df = pd.DataFrame(meteo_data, columns=cols)
+
+final_meteo_df = pd.merge(left=final_df, right=meteo_df, how='inner', left_on='Ville', right_on='ville')
+
+final_meteo_df.to_csv('data.csv', index=False, compression="zip")
 
 #------------------------------ HISTORISATION ----------------------------------------------
 try:
-    histo_df = pd.read_csv('histo.csv') 
-    historisation = (pd.concat([final_df, histo_df], ignore_index=True, sort =False)
+    histo_df = pd.read_csv('histo.csv', compression="zip") 
+    historisation = (pd.concat([final_meteo_df, histo_df], ignore_index=True, sort =False)
             .drop_duplicates(['Identifiant station','Actualisation de la donnée'], keep='last'))
-    historisation.to_csv('histo.csv', index=False)
+    historisation.to_csv('histo.csv', index=False, compression="zip")
 except:
-    final_df.to_csv('histo.csv')
+    final_meteo_df.to_csv('histo.csv',index=False, compression="zip")
