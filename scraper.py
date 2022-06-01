@@ -88,7 +88,8 @@ final_df = get_final_df(data, stations)
 
 #-------------------------------- METEO ----------------------------------------------
 
-ua = FakeUserAgent().random
+fa = FakeUserAgent()
+ua = fa.random
 prox = get_proxies()
 villes = list(final_df['Ville'].unique())
 meteo_data = []
