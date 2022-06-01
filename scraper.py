@@ -1,3 +1,5 @@
+#------------------------------ IMPORT DES LIBRAIRIES ----------------------------------
+
 import pandas as pd 
 import json
 from flatten_json import flatten
@@ -8,7 +10,7 @@ from bs4 import BeautifulSoup
 from fake_useragent import FakeUserAgent
 import random
 
-
+#---------------------------------- URLS ---------------------------------------
 
 data_url = "https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metropole/station_status.json"
 stations_url = 'https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metropole/station_information.json'
