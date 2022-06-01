@@ -78,7 +78,8 @@ def get_proxies():
         port = port.replace(', 3128','')
         proxies.append(ip+':'+port)
 
-    return random.choice(proxies)
+    return proxies
+
 
 #------------------------------ PROCESS ----------------------------------------------
 # Process
@@ -90,7 +91,8 @@ final_df = get_final_df(data, stations)
 
 fa = FakeUserAgent()
 ua = fa.random
-prox = get_proxies()
+proxies = get_proxies()
+prox = random.choice(proxies)
 villes = list(final_df['Ville'].unique())
 meteo_data = []
 
