@@ -96,7 +96,7 @@ meteo_data = []
 for ville in villes:
     url = f'https://www.lameteoagricole.net/index_meteo-heure-par-heure.php?communehome={ville}'
     response = requests.get(url, headers = {'headers':ua}, proxies = {'http':prox}, timeout =5)
-    soup = BeautifulSoup(response.text, 'lxml')
+    soup = BeautifulSoup(response.text, 'html.parser')
     text = soup.findAll('div', {'class':'fond2'})[1]
     d = text.getText(strip=True,separator='\n').splitlines()
     d = d[1:]
