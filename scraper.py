@@ -1,7 +1,7 @@
 import pandas as pd 
 import requests
 from bs4 import BeautifulSoup 
-from fake_useragent import FakeUserAgent
+from anti_useragent import UserAgent
 import random
 
 
@@ -37,8 +37,7 @@ def get_proxies():
 
 def get_meteo(villes):
     
-    fa = FakeUserAgent()
-    ua = fa.random
+    ua = UserAgent().random
     proxies = get_proxies()
     prox = random.choice(proxies)
     meteo_data = []
