@@ -25,14 +25,20 @@ jobs:
       - name: Run Script 
         run: |
           python scraper.py
-      
+          
+      - name: Get Time
+        id: time
+        uses: Plabick/Remote-Time-Action@V1.0
+        with:
+          timezone: 'EET'
+          
       - name: Commit and Push Changes
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           timestamp=$(date -u)
-          git commit -m "Latest data: ${timestamp}" || exit 0
+          git commit -m "Derniere MAJ: ${{steps.time.outputs.epochTime}}" || exit 0
           git push origin main
 
       - name: Push changes
