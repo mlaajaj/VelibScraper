@@ -10,19 +10,19 @@ stations_url = 'https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metro
 
 #------------------------------ FONCTIONS ----------------------------------------------
 
-def get_data(url):
+def get_data(url): # Cette fonction prend en entrée une URL et retourne un dataframe avec un pré-traitement.
     
     df = pd.read_csv(url, sep=';')
     df = df.drop(columns=df.columns[-1]) 
     df['Actualisation de la donnée'] = pd.to_datetime(df['Actualisation de la donnée'],utc=True)
     df['Actualisation de la donnée'] = df['Actualisation de la donnée'].dt.tz_convert(tz='CET')
     df['Actualisation de la donnée'] = df['Actualisation de la donnée'].dt.tz_localize(None)
-    max_date = df['Actualisation de la donnée'].dt.date.max()
+    max_date = df['Actualisation de la donnée'].dt.date.max() # Il existe dans le dataset des données remontant à 2018. Nous voulons uniquement celles du jour.
     df = df[df['Actualisation de la donnée'].dt.date==max_date].sort_values('Actualisation de la donnée',ascending=False)
       
     return df
 
-def get_proxies():
+def get_proxies(): 
     proxies = []
     response = requests.get('https://vpnhack.com/premium-proxy-list')
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -35,7 +35,7 @@ def get_proxies():
     return proxies
 
 
-def get_meteo(villes):
+def get_meteo(villes):  # Prend en entrée une liste de villes. 
     
     ua = UserAgent().random
     proxies = get_proxies()
