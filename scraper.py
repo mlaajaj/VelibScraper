@@ -53,7 +53,6 @@ def get_meteo(villes):
         meteo_data.append(ville_data)
         
     cols = [n.strip() for n in d[0::2]]
-    cols = [n.strip() for n in d[0::2]]
     cols.append('ville')
     
     return pd.DataFrame(meteo_data, columns=cols)
