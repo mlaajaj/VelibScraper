@@ -44,9 +44,15 @@ def get_meteo(villes):  # Prend en entrée une liste de villes.
     
     for ville in villes:
         url = f'https://www.lameteoagricole.net/index_meteo-heure-par-heure.php?communehome={ville}'
-        response = requests.get(url, headers = {'headers':ua}, proxies = {'http':prox}, timeout =5)
-        soup = BeautifulSoup(response.text, 'html.parser')
-        text = soup.findAll('div', {'class':'fond2'})[1]
+        try:
+            response = requests.get(url, headers = {'headers':ua}, proxies = {'http':prox}, timeout =5)
+            soup = BeautifulSoup(response.text, 'html.parser')
+            text = soup.findAll('div', {'class':'fond2'})[1]
+        except:
+            response = requests.get(url, headers = {'headers':ua}, timeout =5)
+            soup = BeautifulSoup(response.text, 'html.parser')
+            text = soup.findAll('div', {'class':'fond2'})[1]
+            
         d = text.getText(strip=True,separator='\n').splitlines()[1:]
         ville_data = [n.strip() for n in d[1::2]]
         ville_data.append(ville)
