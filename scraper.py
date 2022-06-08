@@ -44,22 +44,20 @@ def get_meteo(villes):  # Prend en entrée une liste de villes.
     
     for ville in villes:
         url = f'https://www.lameteoagricole.net/index_meteo-heure-par-heure.php?communehome={ville}'
-        try:
-            response = requests.get(url, headers = {'headers':ua}, proxies = {'http':prox}, timeout =5)
-            soup = BeautifulSoup(response.text, 'html.parser')
-            text = soup.findAll('div', {'class':'fond2'})[1]
-        except:
-            response = requests.get(url, headers = {'headers':ua}, timeout =5)
-            soup = BeautifulSoup(response.text, 'html.parser')
-            text = soup.findAll('div', {'class':'fond2'})[1]
-            
-        d = text.getText(strip=True,separator='\n').splitlines()[1:]
-        ville_data = [n.strip() for n in d[1::2]]
-        ville_data.append(ville)
-        meteo_data.append(ville_data)
+        response = requests.get(url, headers = {'headers':ua}, proxies = {'http':prox}, timeout =5)
+        soup = BeautifulSoup(response.text, 'html.parser')
         
-    cols = [n.strip() for n in d[0::2]]
-    cols.append('ville')
+        infos_generales = soup.find('div', {"class":"card-body row"}).getText(strip=True,separator='\n').splitlines()[2:4]
+        infos_details = soup.find('div', {"class":"card-body row"}).getText(strip=True,separator='\n').splitlines()[5:-8:3]
+
+        infos_generales.extend(infos_details)      
+        infos_generales.append(ville)
+        meteo_data.append(infos_generales)
+        
+    cols = ["Conditions", "Temp"]
+    cols_details = soup.find('div', {"class":"card-body row"}).getText(strip=True,separator='\n').splitlines()[4:-8:3]
+    cols.extend(cols_details)
+    cols.append("ville")
     
     return pd.DataFrame(meteo_data, columns=cols)
 
